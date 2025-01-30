@@ -4,9 +4,22 @@ const messageForm = document.querySelector("#form");
 const messageInput = document.querySelector("input");
 const messageBtn = document.querySelector("button");
 const locationBtn = document.getElementById("location");
+const message = document.querySelector("#message");
+
+// templates
+
+const messageTemplate = document.querySelector("#message-template").innerHTML;
+const locationTemplate = document.querySelector("#location-template").innerHTML;
 
 socket.on("message", (msg) => {
-  console.log("server : " + msg);
+  // console.log("server : " + msg);
+  const html = Mustache.render(messageTemplate, { message: msg });
+  message.insertAdjacentHTML("beforeend", html);
+});
+
+socket.on("locationMessage", (location) => {
+  const html = Mustache.render(locationTemplate, { location });
+  message.insertAdjacentHTML("beforeend", html);
 });
 
 document.querySelector("#form").addEventListener("submit", (e) => {
@@ -31,7 +44,6 @@ document.querySelector("#location").addEventListener("click", (e) => {
   locationBtn.setAttribute("disabled", "disabled");
 
   navigator.geolocation.getCurrentPosition((position) => {
-    console.log(position);
     const lat = position.coords.latitude;
     const long = position.coords.longitude;
 
