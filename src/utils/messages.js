@@ -1,5 +1,6 @@
-const formatMessage = (text) => {
+const formatMessage = (username, text) => {
   return {
+    username,
     text,
     createdAt: new Date().getTime(),
   };
